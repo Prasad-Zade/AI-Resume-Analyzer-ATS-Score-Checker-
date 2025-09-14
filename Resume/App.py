@@ -42,7 +42,6 @@ except LookupError:
     nltk.download('words', quiet=True)
 
 #libraries to parse the resume pdf files
-from pyresparser import ResumeParser
 from pdfminer3.layout import LAParams, LTTextBox
 from pdfminer3.pdfpage import PDFPage
 from pdfminer3.pdfinterp import PDFResourceManager
