@@ -14,7 +14,7 @@ from pdfminer3.converter import TextConverter
 import io,random
 from streamlit_tags import st_tags
 from PIL import Image
-import pymysql
+import sqlite3
 from pyresparser import ResumeParser
 from Courses import ds_course,web_course,android_course,ios_course,uiux_course,resume_videos,interview_videos
 import pafy #for uploading youtube videos
@@ -130,13 +130,13 @@ def course_recommender(course_list):
 
 #CONNECT TO DATABASE
 
-connection = pymysql.connect(host='localhost',user='root',password='1234',db='cv')
+connection = sqlite3.connect('cv.db')
 cursor = connection.cursor()
 
 def insert_data(name,email,res_score,timestamp,no_of_pages,reco_field,cand_level,skills,recommended_skills,courses):
     DB_table_name = 'user_data'
     insert_sql = "insert into " + DB_table_name + """
-    values (0,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
+    values (NULL,?,?,?,?,?,?,?,?,?,?)"""
     rec_values = (name, email, str(res_score), timestamp,str(no_of_pages), reco_field, cand_level, skills,recommended_skills,courses)
     cursor.execute(insert_sql, rec_values)
     connection.commit()
@@ -157,25 +157,22 @@ def run():
     st.sidebar.markdown(link, unsafe_allow_html=True)
 
 
-    # Create the DB
-    db_sql = """CREATE DATABASE IF NOT EXISTS CV;"""
-    cursor.execute(db_sql)
+    # SQLite doesn't need CREATE DATABASE
 
     # Create table
     DB_table_name = 'user_data'
     table_sql = "CREATE TABLE IF NOT EXISTS " + DB_table_name + """
-                    (ID INT NOT NULL AUTO_INCREMENT,
-                     Name varchar(500) NOT NULL,
-                     Email_ID VARCHAR(500) NOT NULL,
-                     resume_score VARCHAR(8) NOT NULL,
-                     Timestamp VARCHAR(50) NOT NULL,
-                     Page_no VARCHAR(5) NOT NULL,
-                     Predicted_Field BLOB NOT NULL,
-                     User_level BLOB NOT NULL,
-                     Actual_skills BLOB NOT NULL,
-                     Recommended_skills BLOB NOT NULL,
-                     Recommended_courses BLOB NOT NULL,
-                     PRIMARY KEY (ID));
+                    (ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                     Name TEXT NOT NULL,
+                     Email_ID TEXT NOT NULL,
+                     resume_score TEXT NOT NULL,
+                     Timestamp TEXT NOT NULL,
+                     Page_no TEXT NOT NULL,
+                     Predicted_Field TEXT NOT NULL,
+                     User_level TEXT NOT NULL,
+                     Actual_skills TEXT NOT NULL,
+                     Recommended_skills TEXT NOT NULL,
+                     Recommended_courses TEXT NOT NULL);
                     """
     cursor.execute(table_sql)
     if choice == 'User':
