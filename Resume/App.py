@@ -177,13 +177,14 @@ def insert_data(name,email,res_score,timestamp,no_of_pages,reco_field,cand_level
 
 st.set_page_config(
    page_title="AI Resume Analyzer",
-   page_icon='./Logo/logo2.png',
 )
 def run():
-    img = Image.open('./Logo/logo2.png')
-    # img = img.resize((250,250))
-    st.image(img)
-    st.title("AI Resume Analyser")
+    try:
+        img = Image.open('./Logo/logo2.png')
+        st.image(img)
+    except FileNotFoundError:
+        st.title("🤖 AI Resume Analyser")
+
     st.sidebar.markdown("# Choose User")
     activities = ["User", "Admin"]
     choice = st.sidebar.selectbox("Choose among the given options:", activities)
@@ -216,6 +217,8 @@ def run():
         if pdf_file is not None:
             with st.spinner('Uploading your Resume...'):
                 time.sleep(4)
+            import os
+            os.makedirs('./Uploaded_Resumes', exist_ok=True)
             save_image_path = './Uploaded_Resumes/'+pdf_file.name
             with open(save_image_path, "wb") as f:
                 f.write(pdf_file.getbuffer())
