@@ -1,0 +1,10 @@
+streamlit
+plotly
+pandas
+pyresparser
+pdfminer3
+streamlit-tags
+Pillow
+pafy
+nltk
+pdfplumber
