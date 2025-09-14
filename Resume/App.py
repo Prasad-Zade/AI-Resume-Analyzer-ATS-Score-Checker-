@@ -4,6 +4,43 @@ from collections import Counter
 import pandas as pd
 import base64,random
 import time,datetime
+import nltk
+import ssl
+
+# Handle SSL certificate issues
+try:
+    _create_unverified_https_context = ssl._create_unverified_context
+except AttributeError:
+    pass
+else:
+    ssl._create_default_https_context = _create_unverified_https_context
+
+# Download NLTK data with error handling
+try:
+    nltk.data.find('tokenizers/punkt')
+except LookupError:
+    nltk.download('punkt', quiet=True)
+
+try:
+    nltk.data.find('corpora/stopwords')
+except LookupError:
+    nltk.download('stopwords', quiet=True)
+
+try:
+    nltk.data.find('taggers/averaged_perceptron_tagger')
+except LookupError:
+    nltk.download('averaged_perceptron_tagger', quiet=True)
+
+try:
+    nltk.data.find('chunkers/maxent_ne_chunker')
+except LookupError:
+    nltk.download('maxent_ne_chunker', quiet=True)
+
+try:
+    nltk.data.find('corpora/words')
+except LookupError:
+    nltk.download('words', quiet=True)
+
 #libraries to parse the resume pdf files
 from pyresparser import ResumeParser
 from pdfminer3.layout import LAParams, LTTextBox
@@ -15,12 +52,8 @@ import io,random
 from streamlit_tags import st_tags
 from PIL import Image
 import sqlite3
-from pyresparser import ResumeParser
 from Courses import ds_course,web_course,android_course,ios_course,uiux_course,resume_videos,interview_videos
 import pafy #for uploading youtube videos
-import plotly.express as px #to create visualisations at the admin session
-import nltk
-nltk.download('stopwords')
 import pdfplumber
 import re
 
