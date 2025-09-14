@@ -4,6 +4,5 @@ pandas
 pdfminer3
 streamlit-tags
 Pillow
-pafy
 nltk
 pdfplumber

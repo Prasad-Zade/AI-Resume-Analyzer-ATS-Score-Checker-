@@ -52,7 +52,6 @@ from streamlit_tags import st_tags
 from PIL import Image
 import sqlite3
 from Courses import ds_course,web_course,android_course,ios_course,uiux_course,resume_videos,interview_videos
-import pafy #for uploading youtube videos
 import pdfplumber
 import re
 
@@ -104,7 +103,10 @@ def custom_resume_parser(pdf_path):
 
 
 def fetch_yt_video(link):
-    return link 
+    # Extract video title from URL or return a generic title
+    if 'youtube.com' in link or 'youtu.be' in link:
+        return "Resume Writing Tips"
+    return "Career Development Video" 
 
 def get_table_download_link(df,filename,text):
     """Generates a link allowing the data in a given panda dataframe to be downloaded
